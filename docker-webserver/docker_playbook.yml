@@ -1,0 +1,74 @@
+- hosts: docker_hosts
+  tasks:
+    - name: Creating directory for mounting the DVD iso
+      file:
+        state: directory
+        path: "/dvd"
+
+    - name: Mounting the DVD iso on directory
+      mount:
+        src: "/dev/cdrom"
+        path: "/dvd"
+        state: mounted
+        fstype: "iso9660"
+
+    - name: Creating directory to save copies of files from controller node
+      file:
+        state: directory
+        path: "/root/ansible_files/controller_files/httpd_files"
+  
+    - name: Configuring YUM repo using packages from AppStream of DVD iso
+      yum_repository:
+        name: "appstream"
+        description: "AppStream packages"
+        baseurl: "/dvd/AppStream"
+        gpgcheck: no
+      
+    - name: Configuring YUM repo using packages from BaseOS of DVD iso
+      yum_repository:
+        name: "baseos"
+        description: "BaseOS packages"
+        baseurl: "/dvd/BaseOS"
+        gpgcheck: no
+
+    - name: Configuring repo source for Docker
+      yum_repository:
+        name: "docker_repo"
+        description: "Docker source"
+        baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
+        gpgcheck: no
+
+    - name: Installing Docker
+      command: yum install docker-ce --nobest -y
+
+    - name: Starting Docker daemon
+      service:
+        name: docker
+        state: started
+
+    - name: Installing docker-py package
+      pip:
+        name: docker
+
+    - name: Pulling httpd Docker image from Docker Hub
+      docker_image:
+              name: "httpd"
+              source: pull
+
+    - name: Copy webpage to the Managed Node
+      copy:
+        src: "/root/test_ansible_ws/httpd_files/test.html"
+        dest: "/root/ansible_files/controller_files/httpd_files/test.html"
+
+    - name: Starting Docker container with httpd image
+      docker_container:
+        name: "webserver_con"
+        image: httpd
+        exposed_ports:
+        - '80'
+        ports:
+        - "9999:80"
+        volumes:
+        - /root/ansible_files/controller_files/httpd_files:/usr/local/apache2/htdocs/
+        state: started
+        detach: yes
