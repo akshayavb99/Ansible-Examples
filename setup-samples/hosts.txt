@@ -1,2 +1,8 @@
-[<group-name>]
+[<group-name-1>]
+<IP-addr of target nodes> ansible_user=<username> ansible_password=<password> ansible_connection=ssh
+
+[<group-name-2>]
+<IP-addr of target nodes> ansible_user=<username> ansible_password=<password> ansible_connection=ssh
+
+[<group-name-3>]
 <IP-addr of target nodes> ansible_user=<username> ansible_password=<password> ansible_connection=ssh
