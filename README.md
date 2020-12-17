@@ -11,5 +11,9 @@ This repository contains all the Playbooks and other files used to work with dif
  
 ## Examples
 ### [Setting up the YUM repository and Docker Community Edition in RHEL8](https://github.com/akshayavb99/Ansible-Examples/tree/main/docker-webserver)
-In this example, we will be looking at how we can configure the YUM repository in RHEL8 using Ansible Playbooks and basic Linux scripting.<br>
-Detailed explanation: https://akshayavb99.medium.com/automation-with-ansible-common-terms-and-setting-up-docker-7a689c4fa8bb
+In this example, we will be looking at how we can configure the YUM repository and set up Docker Community Edition in RHEL8 using Ansible Playbooks and basic Linux scripting.<br>
+Detailed explanation: https://akshayavb99.medium.com/automation-with-ansible-common-terms-and-setting-up-docker-7a689c4fa8bb <br>
+
+### [Setting up a Hadoop Cluster](https://github.com/akshayavb99/Ansible-Examples/tree/main/docker-webserver)
+In this example, we will be looking at how we can set up a Hadoop cluster using Ansible Playbooks and basic Linux scripting.<br>
+Detailed explanation:<br>
