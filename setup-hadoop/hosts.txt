@@ -1,0 +1,5 @@
+[hadoop_namenodes]
+192.168.1.39 ansible_user=root ansible_password=<password> ansible_connection=ssh
+
+[hadoop_datanodes]
+192.168.1.52 ansible_user=root ansible_password=<password> ansible_connection=ssh

@@ -1,0 +1,32 @@
+- hosts: hadoop_namenodes:hadoop_datanodes
+  tasks: 
+    - name: Checking if JDK is installed
+      command: "rpm -q jdk1.8-1.8.0_171-fcs.x86_64"
+      register: installed_jdk
+
+    - name: Checking if Hadoop Version-1 is installed
+      command: "rpm -q hadoop-1.2.1-1.x86_64"
+      register: installed_hadoop
+
+    - name: Downloading Hadoop Version-1 RPM
+      get_url: 
+        dest: "/root/"
+        mode: 0644
+        url: "https://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1-1.x86_64.rpm"
+      when: installed_hadoop.rc == 1
+
+    - name: Copying JDK matching with Hadoop Version-1
+      copy:
+         src: "/root/jdk-8u171-linux-x64.rpm"
+         dest: "/root/"
+      when: installed_jdk.rc == 1
+
+    - name: Installing JDK
+      command:
+         cmd: "rpm -i /root/jdk-8u171-linux-x64.rpm"
+      when: installed_jdk.rc == 1
+
+    - name: Installing Hadoop
+      command:
+         cmd: "rpm -i /root/hadoop-1.2.1-1.x86_64.rpm --force"
+      when: installed_hadoop.rc == 1

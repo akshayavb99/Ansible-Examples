@@ -1,0 +1,26 @@
+---
+- hosts: hadoop_namenodes
+  tasks: 
+    - name: Create storage sharing directory
+      file:
+         state: directory
+         path: "{{ nn_dir }}"
+      register: created_new_dir
+
+    - name: Stop datanode if it is running
+      command: hadoop-daemon.sh stop namenode
+      register: datanode_inactive
+
+    - name: Configure hdfs-site.xml
+      template:
+         src: "sample-nn-hdfs-site.xml.j2"
+         dest: "/etc/hadoop/hdfs-site.xml"
+      
+    - name: Configure core-site.xml
+      template:
+         src: "sample-nn-core-site.xml.j2"
+         dest: "/etc/hadoop/core-site.xml"
+
+    - name: Format Hadoop storage directory if new directory is created
+      shell: "echo Y | hadoop namenode -format"
+      when: created_new_dir.changed == true

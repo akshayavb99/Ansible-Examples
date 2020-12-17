@@ -1,0 +1,22 @@
+- name: Start namenode
+  hosts: hadoop_namenodes
+  tasks:
+    - name: Start Hadoop service
+      command:
+         cmd: "hadoop-daemon.sh start namenode"
+
+    - name: Clear out cache
+      command:
+         cmd: "echo 3 > /proc/sys/vm/drop_caches"
+
+- name: Start datanodes
+  hosts: hadoop_datanodes
+  tasks:
+    - name: Start Hadoop service
+      command:
+         cmd: "hadoop-daemon.sh start datanode"
+
+    - name: Clear out cache
+      command:
+         cmd: "echo 3 > /proc/sys/vm/drop_caches"
+

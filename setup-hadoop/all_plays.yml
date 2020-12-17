@@ -1,0 +1,7 @@
+---
+# file: Master Playbook
+- include: install_hadoop.yml
+- include: setup_namenode.yml
+- include: setup_datanode.yml
+- include: start_services.yml
+

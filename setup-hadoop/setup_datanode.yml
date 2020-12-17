@@ -1,0 +1,28 @@
+---
+- hosts: hadoop_datanodes
+  tasks: 
+    - name: Create storage sharing directory
+      file:
+         state: directory
+         path: "{{ dn_dir }}"
+
+    - name: Check if datanode is running
+      shell: ps -aux | grep "Datanode"
+      ignore_errors: yes
+      changed_when: false
+      register: datanode_active
+
+    - name: Stop datanode if it is running
+      command: hadoop-daemon.sh stop datanode
+      when: datanode_active.rc == 0
+      register: datanode_inactive
+
+    - name: Configure hdfs-site.xml
+      template:
+         src: "sample-dn-hdfs-site.xml.j2"
+         dest: "/etc/hadoop/hdfs-site.xml"
+      
+    - name: Configure core-site.xml
+      template:
+         src: "sample-dn-core-site.xml.j2"
+         dest: "/etc/hadoop/core-site.xml"
