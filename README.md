@@ -18,5 +18,5 @@ Detailed explanation: https://akshayavb99.medium.com/automation-with-ansible-com
 In this example, we will be looking at how we can set up a Hadoop cluster using Ansible Playbooks and basic Linux scripting.<br>
 Detailed explanation:<br> https://akshayavb99.medium.com/automation-with-ansible-setting-up-hadoop-clusters-58bc47e5496d <br>
 
-### [Setting up backend webservers with HAProxy Loadbalancer]
+### [Setting up backend webservers with HAProxy Loadbalancer](https://github.com/akshayavb99/Ansible-Examples/tree/main/setup-haproxy)
 In this example, we will be looking at how we can set up a loadbalancer for webservers using Ansible Playbooks.<br>
