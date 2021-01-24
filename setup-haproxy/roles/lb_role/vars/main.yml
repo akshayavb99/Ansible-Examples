@@ -1,0 +1,5 @@
+---
+# vars file for lb_role
+bind_port: 8081
+httpd_port: 80
+

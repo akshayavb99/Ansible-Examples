@@ -1,0 +1,11 @@
+- name: Playbook to setup all the backend webservers
+  hosts: backend_webservers
+  roles: 
+    - /root/test_ansible_ws/setup-haproxy/roles/webserver_role
+
+- name: Play to setup the loadbalancer
+  hosts: localhost
+  roles:
+    - /root/test_ansible_ws/setup-haproxy/roles/lb_role
+      
+ 

@@ -1,0 +1,6 @@
+[backend_webservers]
+192.168.1.40 ansible_user=root ansible_password=Akshuvb99* ansible_connection=ssh
+192.168.1.55 ansible_user=root ansible_password=Akshuvb99* ansible_connection=ssh
+
+[lb]
+localhost ansible_user=root ansible_password=Akshuvb99* ansible_connection=ssh

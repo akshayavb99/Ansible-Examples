@@ -1,0 +1,23 @@
+---
+# tasks file for lb_role
+- name: Install haproxy package
+  package:
+    name: haproxy
+    state: present
+
+- name: Configure the configuration file
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart haproxy
+
+- name: Allow traffic through {{ bind_port }}
+  firewalld:
+    port: "{{ bind_port }}/tcp"
+    state: enabled
+    permanent: yes
+
+- name: Start haproxy service
+  service:
+    name: haproxy
+    state: started
