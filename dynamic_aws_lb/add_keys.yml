@@ -1,0 +1,11 @@
+---
+#Add private keys of all the instances
+- hosts: localhost
+  vars:
+    key_paths:
+      - /root/test_ansible_ws/dynamic_aws_lb/arth_hadoop_key.pem
+  tasks:
+    - name: Start SSH Agent to add PEM Key to access instances
+      shell: ssh-agent bash;ssh-add {{ item }}
+      loop: "{{ key_paths }}"
+

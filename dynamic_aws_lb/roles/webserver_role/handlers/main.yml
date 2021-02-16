@@ -1,0 +1,6 @@
+---
+# handlers file for webserver_role
+- name: restart httpd
+  service:
+    name: httpd
+    state: restarted

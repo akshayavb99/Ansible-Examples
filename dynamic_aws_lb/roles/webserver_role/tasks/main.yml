@@ -1,0 +1,30 @@
+---
+# tasks file for webserver_role
+- name: Installing webserver on RedHat
+  package:
+    name: httpd
+    state: present
+
+- name: Installing PHP package
+  package:
+    name: php
+    state: present
+
+- name: Copy desired content
+  copy:
+    src: test.php
+    dest: /var/www/html/test.php
+  notify: restart httpd
+
+- name: Allow traffic through default httpd-port
+  firewalld:
+    service: http
+    state: enabled
+    permanent: yes
+  ignore_errors: yes
+  ignore_unreachable: yes
+
+- name: Start the webserver
+  service:
+    name: httpd
+    state: started

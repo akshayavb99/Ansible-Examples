@@ -1,0 +1,14 @@
+---
+- name: Adding private keys of instances to SSH
+  include: add_keys.yml
+
+- name: Configure webservers
+  vars:
+    httpd_port: 80
+  include: webserver_ec2.yml
+
+- name: Configure haproxy
+  vars:
+    httpd_port: 80
+    bind_port: 8081
+  include: haproxy_ec2.yml

@@ -1,0 +1,16 @@
+---
+# Configuring desired number of HAProxy instances
+- hosts: localhost
+  vars:
+    count: 1
+    tag_name: haproxy
+  roles:
+    - role: roles/provision-ec2
+  tasks:
+    - name: Wait for SSH to come up
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        timeout: 180
+      loop: "{{ ec2.instances }}"
+
+ 
