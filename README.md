@@ -10,13 +10,17 @@ This repository contains all the Playbooks and other files used to work with dif
 -----
  
 ## Examples
-### [Setting up the YUM repository and Docker Community Edition in RHEL8](https://github.com/akshayavb99/Ansible-Examples/tree/main/docker-webserver)
+### [1. Setting up the YUM repository and Docker Community Edition in RHEL8](https://github.com/akshayavb99/Ansible-Examples/tree/main/docker-webserver)
 In this example, we will be looking at how we can configure the YUM repository and set up Docker Community Edition in RHEL8 using Ansible Playbooks and basic Linux scripting.<br>
 Detailed explanation: https://akshayavb99.medium.com/automation-with-ansible-common-terms-and-setting-up-docker-7a689c4fa8bb <br>
 
-### [Setting up a Hadoop Cluster](https://github.com/akshayavb99/Ansible-Examples/tree/main/setup-hadoop)
+### [2. Setting up a Hadoop Cluster](https://github.com/akshayavb99/Ansible-Examples/tree/main/setup-hadoop)
 In this example, we will be looking at how we can set up a Hadoop cluster using Ansible Playbooks and basic Linux scripting.<br>
 Detailed explanation:<br> https://akshayavb99.medium.com/automation-with-ansible-setting-up-hadoop-clusters-58bc47e5496d <br>
 
-### [Setting up backend webservers with HAProxy Loadbalancer](https://github.com/akshayavb99/Ansible-Examples/tree/main/setup-haproxy)
+### [3. Setting up backend webservers with HAProxy Loadbalancer](https://github.com/akshayavb99/Ansible-Examples/tree/main/setup-haproxy)
 In this example, we will be looking at how we can set up a loadbalancer for webservers using Ansible Playbooks.<br>
+Detailed explanation: <br> https://akshayavb99.medium.com/automation-with-ansible-setting-up-loadbalancers-using-haproxy-and-ansible-roles-3dd8313a38c9?source=friends_link&sk=bfe251b00918323b2fc07c8224dbbd9f <br>
+
+### [4. Setting up webservers and HAProxy Loadbalancer on AWS EC2 instances with dynamic inventory](https://github.com/akshayavb99/Ansible-Examples/tree/main/dynamic_aws_lb)
+In this example, the objective of Example 3 is achieved again, but using AWS EC2 instances and dynamic Ansible Inventory. The files used for dynamic inventory (ec2.py and ec2.ini) used is taken from [this repository](https://github.com/ansible/ansible/tree/stable-2.9/contrib/inventory)
