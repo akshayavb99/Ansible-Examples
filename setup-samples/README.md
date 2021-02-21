@@ -1,5 +1,5 @@
 ## Setup-Examples
-This directory contains samples for the Ansible configuration file and the inventory. You can modify it as per your requirements.
+This directory contains samples for the Ansible configuration file and the inventory. You can modify it as per your requirements. Note that it is best to place these files in your current Ansible Workspace
 
 To ensure your controller node and target node(s) can communicate with each other, use the following command
 ```
