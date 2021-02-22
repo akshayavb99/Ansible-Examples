@@ -1,0 +1,73 @@
+---
+- name: Play to install  Docker service and start it
+  hosts: localhost
+  vars_prompt:
+    - name: con_name
+      prompt: "Enter name of the container which will be launched"
+      private: no
+
+  tasks:
+    - name: Installing Docker 
+      yum:
+        name: docker-ce
+        state: present
+        allow_downgrade: yes
+        skip_broken: yes
+      ignore_errors: yes
+
+    - name: Start Docker service
+      block:
+        - service:
+            name: docker
+            state: started
+            enabled: yes
+      rescue:
+        - debug:
+            msg: "Docker is already running"
+
+    - name: Installing docker python module
+      pip:
+        name: docker-py
+
+    - name: Ensuring Firewall rules allow inbound and outbound traffic from containers
+      shell: chmod +x firewall-script.sh;./firewall-script.sh
+      ignore_errors: yes
+
+    - name: Pulling desired docker image
+      docker_image:
+        name: "akshayab99/docker-ssh:v2"
+        source: pull
+
+    - name: Launch container with pulled image
+      docker_container:
+        name: "{{ con_name }}"
+        image: "akshayab99/docker-ssh:v2"
+        detach: yes
+        interactive: no
+        tty: no
+
+    - name: Getting IP address of launched container
+      docker_container_info:
+        name: "{{ con_name }}"
+      register: con_info
+
+    - name: Updating inventory with new container IP
+      blockinfile:
+        path: inventory/inventory
+        block: |
+               [docker]
+               {{ con_info['container']['NetworkSettings']['IPAddress'] }} ansible_ssh_user=root ansible_ssh_pass=redhat  ansible_connection=ssh
+
+    - debug:
+        msg: "Newly launched container IP = {{ con_info.container.NetworkSettings.IPAddress }}"  
+
+- name: Play to install webserver
+  hosts: docker
+  tasks:
+    - name: Install Apache Webserver
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start the webserver
+      shell: /usr/sbin/httpd
