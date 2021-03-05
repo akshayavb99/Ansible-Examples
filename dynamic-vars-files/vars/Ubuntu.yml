@@ -1,0 +1,4 @@
+#Variables for Ubuntu OS
+
+pkg_name: apache2
+svc_name: apache2

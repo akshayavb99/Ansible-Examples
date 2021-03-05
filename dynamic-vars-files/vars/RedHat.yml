@@ -1,0 +1,4 @@
+#Variables for RedHat OS
+
+pkg_name: httpd
+svc_name: httpd

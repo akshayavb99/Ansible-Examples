@@ -1,0 +1,14 @@
+---
+- hosts: all
+  vars_files:
+    - vars/{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml
+  tasks:
+  - name: Install web server software
+    package:
+      name: "{{ pkg_name }}"
+      state: present
+
+  - name: Start the service
+    service:
+      name: "{{ svc_name }}"
+      state: started

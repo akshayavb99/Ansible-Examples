@@ -1,0 +1,3 @@
+#Inventory
+192.168.1.26 ansible_ssh_user=root ansible_ssh_pass=testpass  ansible_connection=ssh
+192.168.1.33 ansible_ssh_user=root ansible_ssh_pass=testpass  ansible_connection=ssh
