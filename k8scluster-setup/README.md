@@ -4,8 +4,8 @@ By default, we have set the counts as 1 Master Node and 2 Worker Nodes.
 
 The main_setup.yml file consists of 4 major parts:
 1. Provisioning EC2 instances for K8s master node and worker node(s). You can directly change the number of each type of nodes, as well as the tags of the EC2 instances. Ensure that you change the hosts values of subsequent plays in the file, as the AWS dynamic inventory groups the hosts according to the EC2 instance tags.
-2. Configuring the K8s Master node.
-3. Configuring the K8s worker node(s).
+2. Configuring the K8s Master node using custom Ansible role in the roles directory.
+3. Configuring the K8s worker node(s) using custom Ansible role in the roles directory.
 4. Setting up WordPress and MySQL pods and integrating them. There are variables like pod names, MySQL database authentication parameters like root password etc., which you can change in the vars/main.yml file of the setup-mysql-wp role.
 
 To set the specifications of your AWS instances like AMI ID, AWS Secret Key etc., you can edit the vault file main.yml provided in the vars directory of the provision-ec2 role using the following command
