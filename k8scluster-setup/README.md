@@ -1,4 +1,5 @@
 ### In this example, you can set up a Kubernetes cluster using AWS EC2 instances, and then setup MySQL and WordPress applications using pods launched on the K8s cluster. 
+The setup has been tested for the Red Hat Enterprise Linux 8 (HVM) (64-bit x86).
 By default, we have set the counts as 1 Master Node and 2 Worker Nodes.
 
 The main_setup.yml file consists of 4 major parts:
