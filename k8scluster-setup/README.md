@@ -21,6 +21,8 @@ export AWS_SECRET_KEY=<YOUR SECRET KEY>
 ```
 2. Define the keys in inventory/ec2.ini file. This method is preferable as it helps avoid exporting the variables for every terminal we use. But ensure that the file is properly protected as your AWS credentials are sensitive.
 
+Note that, we need a local copy of the private key we attach to the EC2 instance(s). Store it in the same location as the main_setup.yml file. The absolute path of the key must also be updated in the ansible.cfg file given. In this case, we have used only one key for all instances. The key must be in the .pem format.
+
 Finally, once these have been completed, you can run the playbook using
 ```
 ansible-playbook main_setup.yml --ask-vault-pass
