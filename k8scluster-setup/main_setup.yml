@@ -1,0 +1,45 @@
+---
+- name: Play to launch the K8s master node
+  hosts: localhost
+  vars:
+    count: 1
+    tag_name: k8sMaster
+  roles:
+    - role: roles/provision-ec2
+  tasks:
+    - name: Wait for SSH to come up
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        timeout: 180
+      loop: "{{ ec2.instances }}"
+
+- name: Play to launch the two K8s worker nodes 
+  hosts: localhost
+  vars:
+    count: 2
+    tag_name: k8sWorker
+  roles:
+    - role: roles/provision-ec2
+  tasks:
+    - name: Wait for SSH to come up
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        timeout: 180
+      loop: "{{ ec2.instances }}"
+
+- name: Play to configure the K8s master node
+  hosts: tag_Name_k8sMaster
+  roles:
+    - role: roles/k8smaster-setup
+
+- name: Play to configure the K8s worker nodes and connect them to the master
+  hosts: tag_Name_k8sWorker
+  vars:
+    token_val: "{{ hostvars['K8S_TOKEN_HOLDER']['token_val'] }}"
+  roles:
+    - role: roles/k8sworker-setup 
+
+- name: Setting up Wordpress and MySQL pods
+  hosts: tag_Name_k8sMaster
+  roles:
+    - role: roles/setup-mysql-wp

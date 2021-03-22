@@ -1,0 +1,90 @@
+---
+# tasks file for k8smaster-setup
+- name: "Creating YUM repo to install Kubernetes"
+  shell: |
+     cat <<EOF  > /etc/yum.repos.d/kubernetes.repo
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+      enabled=1
+      gpgcheck=1
+      repo_gpgcheck=1
+      gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+      exclude=kubelet kubeadm kubectl
+      EOF
+  changed_when: false
+
+- name: "Installing Docker"
+  package:
+     name: docker
+     state: present
+
+- name: "Starting Docker"
+  service:
+     name:  docker
+     state: started
+     enabled: yes
+
+- name: "Changing Docker driver to systemd"
+  shell: | 
+      cat <<EOF > /etc/docker/daemon.json
+      {
+      "exec-opts": ["native.cgroupdriver=systemd"]
+      }
+      EOF
+  changed_when: false
+
+- name: "Restart Docker Services"
+  service:
+     name: docker
+     state: restarted
+ 
+- name: "Installing kubeadm, and other K8s programs"
+  shell: yum install kubeadm -y --disableexcludes=kubernetes
+
+- name: "Starting and enabling kubelet"
+  shell: systemctl enable kubelet --now
+
+- name: "Pulling Images"
+  shell: kubeadm config images pull
+
+- name: "Installing iproute-tc to manage bridged adapter traffic"
+  package:
+     name: iproute-tc
+
+- name: "Setting bridge-nf-call-iptables to 1"
+  shell: echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  changed_when: false
+
+- name: "Initializing Master node"
+  shell: kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem 
+  ignore_errors: yes
+
+- name: "Creating .kube directory"
+  file:
+     path: $HOME/.kube
+     state: directory
+
+- name: "Copying file"
+  shell: cp  -i  /etc/kubernetes/admin.conf  $HOME/.kube/config
+
+- name: "Changing Owner Permissions"
+  shell: chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: "Setting up Flannel"
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  changed_when: False
+
+- name: "Token Creation"
+  shell: kubeadm token create --print-join-command
+  register: token
+  ignore_errors: yes
+
+- name: "Printing the token to connect workers to the master"
+  debug:
+     var: token.stdout
+
+- name: "Creating dummy host to store token"
+  add_host:
+     name: "K8S_TOKEN_HOLDER"
+     token_val: "{{ token.stdout }}"

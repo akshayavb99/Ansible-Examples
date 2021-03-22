@@ -1,0 +1,12 @@
+---
+# vars file for k8smaster-setup
+pkg_name:
+   - "docker"
+   - "kubelet"
+   - "kubeadm"
+   - "kubectl"
+   - "iproute-tc"
+
+svc_name:
+   - "docker"
+   - "kubelet"

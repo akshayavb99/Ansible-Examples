@@ -1,0 +1,23 @@
+---
+# tasks file for provision-ec2
+- name: Provision {{ tag_name }} in AWS
+  ec2:
+    instance_tags:
+      Name: "{{ tag_name }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ inst_type }}"
+    image: "{{ ami_id }}"
+    count: "{{ count }}"
+    wait: yes
+    vpc_subnet_id: "{{ subnet_id }}"
+    assign_public_ip: yes
+    state: present
+    region: "{{ region }}"
+    group_id: "{{ sg_id }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+  register: ec2
+
+- name: Refresh inventory
+  meta: refresh_inventory
+

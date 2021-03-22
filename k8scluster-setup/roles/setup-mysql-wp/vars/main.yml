@@ -1,0 +1,10 @@
+---
+# vars file for setup-mysql-wp
+db_pod_name: "mydb"
+wp_pod_name: "mywp"
+sql_image: "mysql:5.7"
+wp_image: "wordpress:5.1.1-php7.3-apache"
+mysql_root_passwd: "redhat"
+mysql_db_name: "mywpdb"
+mysql_username: "testuser"
+mysql_passwd: "redhat"

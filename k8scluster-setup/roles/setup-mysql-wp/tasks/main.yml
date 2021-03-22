@@ -1,0 +1,30 @@
+---
+# tasks file for setup-mysql-wp
+- name: "Launching MySQL DB Pod"
+  shell: kubectl run "{{ db_pod_name }}" --image "{{ sql_image }}" --env=MYSQL_ROOT_PASSWORD={{ mysql_root_passwd }} --env=MYSQL_DATABASE={{ mysql_db_name }}  --env=MYSQL_USER={{ mysql_username }} --env=MYSQL_PASSWORD={{ mysql_passwd }}
+
+- name: "Launching WordPress Pod"
+  shell: kubectl run "{{ wp_pod_name }}" --image "{{ wp_image }}"
+
+- name: "Exposing WordPress pod"
+  shell: kubectl expose pod "{{ wp_pod_name }}" --type=NodePort --port=80
+
+- name: "Get exposed services information"
+  shell: kubectl get svc
+  register: svc
+
+- name: "Printing the details of services"
+  debug:
+     msg: "{{ svc.stdout }}"
+
+- name: "Waiting for 1 minute for all pods to launch"
+  pause:
+     seconds: 60
+
+- name: "Getting the MySQL database IP"
+  shell: kubectl get pods -o wide
+  register: db_ip
+
+- name: "Printing the IPs of all pods"
+  debug:
+    msg: "{{ db_ip.stdout_lines }}"
